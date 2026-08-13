@@ -469,7 +469,7 @@ namespace LottieViewConvert.ViewModels
             if (file is IStorageFile storageFile)
             {
                 var extension = Path.GetExtension(storageFile.Name).ToLower();
-                if (extension is ".json" or ".tgs")
+                if (extension is ".json" or ".tgs" or ".lottie")
                 {
                     try
                     {

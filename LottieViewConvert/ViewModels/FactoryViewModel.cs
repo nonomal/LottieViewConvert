@@ -290,7 +290,8 @@ public class FactoryViewModel : Page
         FileItems.Clear();
         var files = Directory.GetFiles(folder)
             .Where(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                        || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase))
+                        || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase)
+                        || f.EndsWith(".lottie", StringComparison.OrdinalIgnoreCase))
             .OrderBy(f => Path.GetFileName(f));
 
         foreach (var file in files)
@@ -321,7 +322,8 @@ public class FactoryViewModel : Page
         {
             var files = Directory.GetFiles(folder)
                 .Where(f => f.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
-                            || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase))
+                            || f.EndsWith(".tgs", StringComparison.OrdinalIgnoreCase)
+                            || f.EndsWith(".lottie", StringComparison.OrdinalIgnoreCase))
                 .OrderBy(Path.GetFileName)
                 .Select(file => new FileItemModel
                 {
