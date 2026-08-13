@@ -64,7 +64,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            Action<ExportProgressEventArgs> progressCallback = null)
+            Action<ExportProgressEventArgs>? progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
                 throw new ArgumentException("Lottie path must not be null or empty", nameof(lottiePath));
@@ -186,7 +186,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            IProgress<ExportProgressEventArgs> progress = null)
+            IProgress<ExportProgressEventArgs>? progress = null)
         {
             ExportPngSequence(
                 lottiePath,
@@ -198,7 +198,7 @@ namespace Lottie
                 rotationAngle,
                 flipHorizontal,
                 flipVertical,
-                progress.Report);
+                progress == null ? null : new Action<ExportProgressEventArgs>(progress.Report));
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            Action<ExportProgressEventArgs> progressCallback = null)
+            Action<ExportProgressEventArgs>? progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
                 throw new ArgumentException("Lottie path must not be null or empty", nameof(lottiePath));
@@ -361,7 +361,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            IProgress<ExportProgressEventArgs> progress = null)
+            IProgress<ExportProgressEventArgs>? progress = null)
         {
             ExportSpecificFrames(
                 lottiePath,
@@ -374,7 +374,7 @@ namespace Lottie
                 rotationAngle,
                 flipHorizontal,
                 flipVertical,
-                progress.Report);
+                progress == null ? null : new Action<ExportProgressEventArgs>(progress.Report));
         }
 
         /// <summary>
@@ -500,31 +500,7 @@ namespace Lottie
 
         private static Stream OpenStream(string path)
         {
-            Stream rawStream;
-            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out var uri)
-                && uri is { IsAbsoluteUri: true, IsFile: true })
-            {
-                rawStream = File.OpenRead(uri.LocalPath);
-            }
-            else
-            {
-                rawStream = File.OpenRead(path);
-            }
-
-            if (!rawStream.CanSeek)
-                rawStream = new BufferedStream(rawStream);
-
-            Span<byte> header = stackalloc byte[2];
-            var read = rawStream.Read(header);
-            rawStream.Seek(-read, SeekOrigin.Current);
-
-            if (read != 2 || header[0] != 0x1F || header[1] != 0x8B) return rawStream;
-            
-            using var gzip = new GZipStream(rawStream, CompressionMode.Decompress, leaveOpen: false);
-            var ms = new MemoryStream();
-            gzip.CopyTo(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-            return ms;
+            return LottieFile.OpenFile(path);
         }
     }
 }

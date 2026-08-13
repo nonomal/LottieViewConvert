@@ -23,10 +23,14 @@ namespace LottieViewConvert.Helper.LogHelper
                 LockingModel = new FileAppender.MinimalLock()
             };
 
-            var docPath = AppDomain.CurrentDomain.BaseDirectory;
             var now = DateTime.Now;
             var date = now.ToString("yyyy-MM-dd");
-            var logDir = Path.Combine(docPath, "Logs", now.Year.ToString(), now.Month.ToString());
+            var logDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "LottieViewConvert",
+                "Logs",
+                now.Year.ToString(),
+                now.Month.ToString());
 
             if (!Directory.Exists(logDir))
             {
