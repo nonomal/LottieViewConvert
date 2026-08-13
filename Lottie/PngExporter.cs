@@ -64,7 +64,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            Action<ExportProgressEventArgs> progressCallback = null)
+            Action<ExportProgressEventArgs>? progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
                 throw new ArgumentException("Lottie path must not be null or empty", nameof(lottiePath));
@@ -186,7 +186,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            IProgress<ExportProgressEventArgs> progress = null)
+            IProgress<ExportProgressEventArgs>? progress = null)
         {
             ExportPngSequence(
                 lottiePath,
@@ -198,7 +198,7 @@ namespace Lottie
                 rotationAngle,
                 flipHorizontal,
                 flipVertical,
-                progress.Report);
+                progress == null ? null : new Action<ExportProgressEventArgs>(progress.Report));
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            Action<ExportProgressEventArgs> progressCallback = null)
+            Action<ExportProgressEventArgs>? progressCallback = null)
         {
             if (string.IsNullOrWhiteSpace(lottiePath))
                 throw new ArgumentException("Lottie path must not be null or empty", nameof(lottiePath));
@@ -361,7 +361,7 @@ namespace Lottie
             double rotationAngle = 0.0,
             bool flipHorizontal = false,
             bool flipVertical = false,
-            IProgress<ExportProgressEventArgs> progress = null)
+            IProgress<ExportProgressEventArgs>? progress = null)
         {
             ExportSpecificFrames(
                 lottiePath,
@@ -374,7 +374,7 @@ namespace Lottie
                 rotationAngle,
                 flipHorizontal,
                 flipVertical,
-                progress.Report);
+                progress == null ? null : new Action<ExportProgressEventArgs>(progress.Report));
         }
 
         /// <summary>
