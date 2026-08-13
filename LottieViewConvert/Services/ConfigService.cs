@@ -13,7 +13,9 @@ public class ConfigService
 
     public ConfigService()
     {
-        var appDataPath = Path.Combine(AppContext.BaseDirectory, "Configuration");
+        var appDataPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "LottieViewConvert");
             
         if (!Directory.Exists(appDataPath))
         {
